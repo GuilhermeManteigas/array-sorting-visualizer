@@ -65,6 +65,9 @@
 								<li class="nav-item mx-0 mx-lg-1">
 									<button class="btn btn-l btn-outline-info" onclick="selectionSortTime(array_list); selectionSort(array_list);"><i class="fas fa-play"></i> Selection Sort</button>
 								</li>
+								<li class="nav-item mx-0 mx-lg-1">
+									<button class="btn btn-l btn-outline-info" onclick="insertionSortTime(array_list); insertionSort(array_list);"><i class="fas fa-play"></i> Insertion Sort</button>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -255,6 +258,41 @@ async function selectionSortTime(globalarray){
 			var temp = array[i];
 			array[i] = array[min];
 			array[min] = temp;
+		}
+		var t1 = performance.now()
+		document.getElementById("canvastext").innerHTML = "Array sorting took " + (t1 - t0) + " milliseconds without animations.";
+	}
+};
+
+async function insertionSort(array){
+	if (running == false){
+		running = true
+		for (let i = 1; i < array.length; i++) {
+			draw_array(canvas,array,[i])
+			for (let j = i - 1; j > -1; j--) {
+				draw_array(canvas,array,[i,j])
+				if (array[j + 1] < array[j]) {
+					[array[j + 1], array[j]] = [array[j], array[j + 1]];
+					draw_array(canvas,array,[i,j,j + 1])
+				}
+				await sleep(100/speed)
+			}
+		}
+		draw_array(canvas,array)
+		running = false
+	}
+};
+ 
+async function insertionSortTime(globalarray){
+	if(!running){
+		var array = globalarray.slice();
+		var t0 = performance.now()
+		for (let i = 1; i < array.length; i++) {
+			for (let j = i - 1; j > -1; j--) {
+				if (array[j + 1] < array[j]) {
+					[array[j + 1], array[j]] = [array[j], array[j + 1]];
+				}
+			}
 		}
 		var t1 = performance.now()
 		document.getElementById("canvastext").innerHTML = "Array sorting took " + (t1 - t0) + " milliseconds without animations.";
